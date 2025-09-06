@@ -7,7 +7,6 @@ WORKDIR /src
 # Copy the project and apibuild.sh
 COPY . .
 RUN chmod +x apibuild.sh
-RUN dos2unix apibuild.sh
 
 # Build & publish
 RUN ./apibuild.sh
