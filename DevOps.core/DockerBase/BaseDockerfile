@@ -1,0 +1,7 @@
+﻿# Base image to use as build for all .NET projects
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+# apibuild.sh will be used to build the project
+COPY apibuild.sh /apibuild.sh
+RUN chmod +x /apibuild.sh
+# Set the entry point to the script
+ENTRYPOINT ["/apibuild.sh"]
