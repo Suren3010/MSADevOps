@@ -25,7 +25,7 @@ jobs:
       - name: Build and push DevOps Core image
         uses: docker/build-push-action@v4
         with:
-          context: ./DevOps.core
+          context: ./DevOps.core/DockerBase
           file: ./DevOps.core/DockerBase/BaseDockerfile
           push: true
           tags: ${{ secrets.DOCKERUSERNAME }}/dotnet-base:latest
