@@ -1,0 +1,32 @@
+name: Build DevOps Core Image
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'DevOps.core/**'
+      - '.github/workflows/build-devops-core-image.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERUSERNAME }}
+          password: ${{ secrets.DOCKERPASSWORD }}
+
+      - name: Build and push DevOps Core image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./DevOps.core
+          file: ./DevOps.core/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERUSERNAME }}/dotnet-base:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKERUSERNAME }}/dotnet-base:latest
+          cache-to: type=inline
