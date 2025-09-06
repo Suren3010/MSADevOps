@@ -26,6 +26,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./DevOps.core
-          file: ./DevOps.core/DockerBase/Dockerfile
+          file: ./DevOps.core/DockerBase/BaseDockerfile
           push: true
           tags: ${{ secrets.DOCKERUSERNAME }}/dotnet-base:latest
