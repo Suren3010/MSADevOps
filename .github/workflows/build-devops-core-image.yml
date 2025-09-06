@@ -29,5 +29,3 @@ jobs:
           file: ./DevOps.core/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERUSERNAME }}/dotnet-base:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKERUSERNAME }}/dotnet-base:latest
-          cache-to: type=inline
