@@ -1,7 +1,25 @@
-﻿# Base image to use as build for all .NET projects
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
-# apibuild.sh will be used to build the project
-COPY apibuild.sh /apibuild.sh
-RUN chmod +x /apibuild.sh
-# Set the entry point to the script
-ENTRYPOINT ["/apibuild.sh"]
+﻿# -------------------
+# 1. Build stage
+# -------------------
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy the project and apibuild.sh
+COPY . .
+RUN chmod +x apibuild.sh
+RUN dos2unix apibuild.sh
+
+# Build & publish
+RUN ./apibuild.sh
+
+# -------------------
+# 2. Runtime stage
+# -------------------
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+# Copy the published output from the build stage
+COPY --from=build /app/publish .
+
+# Run the app
+ENTRYPOINT ["dotnet", "/app/*.dll"]
